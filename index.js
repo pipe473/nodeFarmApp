@@ -1,6 +1,6 @@
 const fs = require('fs');
 const http = require('http');
-
+const url = require('url');
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
@@ -41,4 +41,24 @@ const http = require('http');
 ////////////////////////////////////////////////////////////////////
 ////////////////// SERVER
 
+const server = http.createServer((req, res) =>{
+    const pathName = req.url;
 
+    if (pathName === '/' || pathName === '/home') {
+        res.end('<h1>WELCOME TO HOME PAGE!!!</h1>');        
+    }else if (pathName === '/product') {
+        res.end('<h1>Select your Products here...</h1>');
+        
+    }else {
+        res.writeHead(400, {
+            'Content-type':'text/html',
+            'my-custom-header':'hello-world'
+        });
+        res.end('<h3>OOppsss! Page not found</h3>');
+    }
+});
+
+server.listen(8080, '127.0.0.1',() =>{
+    console.log('Listening to requests on Port 8080');
+    
+});
