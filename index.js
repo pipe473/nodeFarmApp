@@ -41,32 +41,35 @@ const url = require('url');
 ////////////////////////////////////////////////////////////////////
 ////////////////// SERVER
 
-const data = fs.readFileSync(`${__dirname}/dev-data/data.json`,'utf-8',(err, data) =>{
-    const dataObj = JSON.parse(data);      
-});
-const server = http.createServer((req, res) =>{
-    const pathName = req.url;
+const tempHomepage = fs.readFileSync(`${__dirname}/templates/template-homePage`,"utf-8");
+const tempCard = fs.readFileSync(`${__dirname}/templates/template-card`,"utf-8");
+const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product`,"utf-8");
 
-    if (pathName === '/' || pathName === '/home') {
-        res.end('<h1>WELCOME TO HOME PAGE!!!</h1>');        
-    }else if (pathName === '/product') {
-        res.end('<h1>Select your Products here...</h1>');
-        
-    }else if (pathName === '/api') {
-      
-            res.writeHead(200, {'Content-type':'application/json'});
-            res.end(data);
-        
-    }else {
-        res.writeHead(400, {
-            'Content-type':'text/html',
-            'my-custom-header':'hello-world'
-        });
-        res.end('<h3>OOppsss! Page not found</h3>');
-    }
+const data = fs.readFileSync(`${__dirname}/dev-data/data.json`,"utf-8");
+const dataObj = JSON.parse(data);
+ 
+const server = http.createServer((req, res) => {
+  const pathName = req.url;
+  // HOME PAGE
+  if (pathName === "/" || pathName === "/home") {
+    res.end("<h1>WELCOME TO HOME PAGE!!!</h1>");
+    //PRODUCT PAGE
+  } else if (pathName === "/product") {
+    res.end("<h1>Select your Products here...</h1>");
+    //API PAGE
+  } else if (pathName === "/api") {
+    res.writeHead(200, { "Content-type": "application/json" });
+    res.end(data);
+  } else {
+    //NOT FOUND
+    res.writeHead(400, {
+      "Content-type": "text/html",
+      "my-custom-header": "hello-world"
+    });
+    res.end("<h3>OOppsss! Page not found</h3>");
+  }
+});
+server.listen(8080, "127.0.0.1", () => {
+  console.log("Listening to requests on Port 8080");
 });
 
-server.listen(8080, '127.0.0.1',() =>{
-    console.log('Listening to requests on Port 8080');
-    
-});
