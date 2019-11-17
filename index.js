@@ -1,6 +1,4 @@
-const fs = require('fs');
-const http = require('http');
-const url = require('url');
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
@@ -41,9 +39,13 @@ const url = require('url');
 ////////////////////////////////////////////////////////////////////
 ////////////////// SERVER
 
-const tempHomepage = fs.readFileSync(`${__dirname}/templates/template-homePage`,"utf-8");
-const tempCard = fs.readFileSync(`${__dirname}/templates/template-card`,"utf-8");
-const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product`,"utf-8");
+const fs = require('fs');
+const http = require('http');
+const url = require('url');
+
+const tempHomepage = fs.readFileSync(`${__dirname}/templates/template-homePage.html`, "utf-8");
+const tempCard = fs.readFileSync(`${__dirname}/templates/template-card.html`,"utf-8");
+const tempProduct = fs.readFileSync(`${__dirname}/templates/template-product.html`,"utf-8");
 
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`,"utf-8");
 const dataObj = JSON.parse(data);
