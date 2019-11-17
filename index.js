@@ -1,4 +1,6 @@
-
+const fs = require('fs');
+const http = require('http');
+const url = require('url');
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////
@@ -39,9 +41,19 @@
 ////////////////////////////////////////////////////////////////////
 ////////////////// SERVER
 
-const fs = require('fs');
-const http = require('http');
-const url = require('url');
+const replaceTemplate =(temp, product) => {
+  let output = temp.replace(/{%PRODUCTNAME%}/g, product.productName);
+  output = output.replace(/{%IMAGE%}/g, product.image);
+  output = output.replace(/{%PRICE}/g, product.price);
+  output = output.replace(/{%FROM%}/g, product.from);
+  output = output.replace(/{%NUTRIENTS%}/g, product.nutrients);
+  output = output.replace(/{%QUANTITY%}/g, product.quantity);
+  output = output.replace(/{%IDESCRIPTION%}/g, product.description);
+  output = output.replace(/{%ID%}/g, product.id);
+
+  if (!product.organic) output = output.replace(/%{NOT_ORGANIC}%/g, 'not-organic');
+  return output;
+}
 
 const tempHomepage = fs.readFileSync(`${__dirname}/templates/template-homePage.html`, "utf-8");
 const tempCard = fs.readFileSync(`${__dirname}/templates/template-card.html`,"utf-8");
@@ -52,17 +64,26 @@ const dataObj = JSON.parse(data);
  
 const server = http.createServer((req, res) => {
   const pathName = req.url;
+
   // HOME PAGE
   if (pathName === "/" || pathName === "/home") {
     res.writeHead(200, { "Content-type": "text/html" });
+
+    const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el));
+    console.log(cardsHtml);
+    
+
     res.end(tempHomepage);
+
     //PRODUCT PAGE
   } else if (pathName === "/product") {
     res.end("<h1>Select your Products here...</h1>");
+
     //API PAGE
   } else if (pathName === "/api") {
     res.writeHead(200, { "Content-type": "application/json" });
     res.end(data);
+
   } else {
     //NOT FOUND
     res.writeHead(400, {
@@ -72,6 +93,7 @@ const server = http.createServer((req, res) => {
     res.end("<h3>OOppsss! Page not found</h3>");
   }
 });
+
 server.listen(8080, "127.0.0.1", () => {
   console.log("Listening to requests on Port 8080");
 });
