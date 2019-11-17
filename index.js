@@ -52,7 +52,8 @@ const server = http.createServer((req, res) => {
   const pathName = req.url;
   // HOME PAGE
   if (pathName === "/" || pathName === "/home") {
-    res.end("<h1>WELCOME TO HOME PAGE!!!</h1>");
+    res.writeHead(200, { "Content-type": "text/html" });
+    res.end(tempHomepage);
     //PRODUCT PAGE
   } else if (pathName === "/product") {
     res.end("<h1>Select your Products here...</h1>");
