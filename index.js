@@ -65,7 +65,7 @@ const dataObj = JSON.parse(data);
 const server = http.createServer((req, res) => {
 
 const { query, pathname } = url.parse(req.url, true);
-const pathname = req.url;
+
 
   // HOME PAGE
   if (pathname === "/" || pathname === "/homePage") {
@@ -78,9 +78,9 @@ const pathname = req.url;
 
     //PRODUCT PAGE
   } else if (pathname === "/product") {
-    console.log(query);
+    const product = dataObj[query.id];
     
-    res.end("<h1>Select your Products here...</h1>");
+    res.end("<h1>This is the product...</h1>");
 
     //API PAGE
   } else if (pathname === "/api") {
