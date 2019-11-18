@@ -69,11 +69,9 @@ const server = http.createServer((req, res) => {
   if (pathName === "/" || pathName === "/home") {
     res.writeHead(200, { "Content-type": "text/html" });
 
-    const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el));
-    console.log(cardsHtml);
-    
-
-    res.end(tempHomepage);
+    const cardsHtml = dataObj.map(el => replaceTemplate(tempCard, el)).join('');
+    const output = tempHomepage.replace('{%PRODUCT_CARDS%}', cardsHtml);   
+    res.end(cardsHtml);
 
     //PRODUCT PAGE
   } else if (pathName === "/product") {
